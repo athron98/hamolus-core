@@ -1,0 +1,44 @@
+{
+  // Worker name + entry point
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hamolus-core",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-12-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // D1 database (records + metadata). Production: replace database_id with your
+  // D1 binding id (`wrangler d1 create hamolus` / `wrangler d1 info hamolus`).
+  // Local `wrangler dev` auto-provisions a miniflare D1 from the metadata.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "hamolus",
+      "database_id": "00000000-0000-0000-0000-000000000000"
+    }
+  ],
+
+  // KV namespace (settings blob: settings:v1 / settings:{land}:v1).
+  // Local `wrangler dev` uses local persistence; replace the id for production.
+  "kv_namespaces": [
+    {
+      "binding": "SETTINGS",
+      "id": "00000000000000000000000000000000"
+    }
+  ],
+
+  // R2 bucket (media assets). Local dev auto-creates it in miniflare.
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "hamolus"
+    }
+  ],
+
+  "vars": {
+    // Credentials (JWT_SECRET, ADMIN_KEY, CORE_MODE, DEFAULT_LAND) are set as
+    // SECRETS (wrangler secret put) or in a gitignored .dev.vars for dev — see
+    // AGENTS.md. A secret with the same name as a var cannot be created, so
+    // none of them are declared here.
+    "PUBLIC_GETS": "true"
+  }
+}
